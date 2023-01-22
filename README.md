@@ -1,2 +1,1 @@
-# NovelCraft文档
-
+# NovelCraft
