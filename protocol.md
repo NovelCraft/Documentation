@@ -127,7 +127,8 @@ When a player connects to the server, the client will send a handshake packet to
   "required": [
     "bound_to",
     "type",
-    "token"
+    "token",
+    "entity_id"
   ],
   "properties": {
     "bound_to": {
@@ -139,6 +140,10 @@ When a player connects to the server, the client will send a handshake packet to
     "token": {
       "description": "The token of the player",
       "type": "string"
+    },
+    "entity_id": {
+      "description": "The entity id of the player",
+      "type": "integer"
     }
   }
 }
@@ -222,7 +227,7 @@ In every tick, the server will send a packet to the client to update the block c
                 },
                 "block_id": {
                   "description": "The block ID",
-                  "type": "number"
+                  "type": "integer"
                 }
               }
             }
@@ -292,7 +297,7 @@ In every 20 ticks, the server will send a packet to the client to update all the
                 "maxItems": 16,
                 "items": {
                   "description": "The block ID",
-                  "type": "number"
+                  "type": "integer"
                 }
               }
             }
@@ -339,14 +344,13 @@ In every tick, the server will send a packet to update the changed entities.
         "required": [
           "entity_id",
           "position",
-          "yaw",
-          "pitch",
+          "orientation",
           "entity_definiion"
         ],
         "properties": {
           "entity_id": {
             "description": "The entity unique ID",
-            "type": "number"
+            "type": "integer"
           },
           "position": {
             "description": "The entity position",
@@ -372,17 +376,28 @@ In every tick, the server will send a packet to update the changed entities.
               }
             }
           },
-          "yaw": {
-            "description": "The entity yaw",
-            "mininum": 0,
-            "exclusiveMaximum": 360,
-            "type": "number"
-          },
-          "pitch": {
-            "description": "The entity pitch",
-            "mininum": -90,
-            "maximum": 90,
-            "type": "number"
+          "orientation": {
+            "description": "The entity orientation",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "yaw",
+              "pitch"
+            ],
+            "properties": {
+              "yaw": {
+                "description": "The entity yaw",
+                "mininum": 0,
+                "exclusiveMaximum": 360,
+                "type": "integer"
+              },
+              "pitch": {
+                "description": "The entity pitch",
+                "mininum": -90,
+                "maximum": 90,
+                "type": "integer"
+              }
+            }
           },
           "entity_definition" {
             "description": "The entity definition",
@@ -424,14 +439,13 @@ In every 20 ticks, the server will send a packet to update all the entities arou
         "required": [
           "entity_id",
           "position",
-          "yaw",
-          "pitch",
+          "orientation",
           "entity_definiion"
         ],
         "properties": {
           "entity_id": {
             "description": "The entity unique ID",
-            "type": "number"
+            "type": "integer"
           },
           "position": {
             "description": "The entity position",
@@ -457,17 +471,28 @@ In every 20 ticks, the server will send a packet to update all the entities arou
               }
             }
           },
-          "yaw": {
-            "description": "The entity yaw",
-            "mininum": 0,
-            "exclusiveMaximum": 360,
-            "type": "number"
-          },
-          "pitch": {
-            "description": "The entity pitch",
-            "mininum": -90,
-            "maximum": 90,
-            "type": "number"
+          "orientation": {
+            "description": "The entity orientation",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "yaw",
+              "pitch"
+            ],
+            "properties": {
+              "yaw": {
+                "description": "The entity yaw",
+                "mininum": 0,
+                "exclusiveMaximum": 360,
+                "type": "integer"
+              },
+              "pitch": {
+                "description": "The entity pitch",
+                "mininum": -90,
+                "maximum": 90,
+                "type": "integer"
+              }
+            }
           },
           "entity_definition" {
             "description": "The entity definition",
@@ -506,51 +531,311 @@ In every second, the server will send a packet to update the time.
     },
     "time": {
       "description": "The time in milliseconds since the server started",
-      "type": "number"
+      "type": "integer"
     },
     "ticks": {
       "description": "The ticks since the server started",
-      "type": "number"
+      "type": "integer"
     }
   }
 }
 ```
 
-```markdown
-## 玩家自己的包 server -> client
+## Player Act
 
-每一tick都要发送
+When player do some actions, such as moving, jumping, attacking, using items, the client will send a packet to the server.
 
-| 数据名称   | 数据类型     | 描述       |
-|:------:|:--------:|:--------:|
-| 玩家ID   | byte     |          |
-| 玩家血量   | decimal  | 0.0-10.0 |
-| 玩家经验值  | int      |          |
-| 玩家总分  | int      |   历史经验值的总和       |
-| 玩家朝向   | Position | 正前方的单位向量 |
-| 玩家坐标   | Position |          |
-| 玩家速度   | Position | 速度向量     |
-| 玩家背包   | 36*Item  |          |
-| 玩家手持物品 | Item     |          |
+### Serverbound
 
-## 玩家自己的按键包 client -> server
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "action"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "player_act"
+    },
+    "action": {
+      "description": "The action the player did",
+      "type": "string",
+      "enum": [
+        "jump",
+        "attack_click",
+        "attack_start",
+        "attack_end",
+        "use_click",
+        "use_start",
+        "use_end"
+      ]
+    }
+  }
+}
+```
 
-需要该操作才发送
+## Player Move
 
-| 数据名称     | 数据类型 | 描述  |
-|:--------:|:----:|:---:|
-| 玩家ID     | byte |     |
-| 玩家是否按下左键 | Bool |     |
-| 玩家是否按下右键 | Bool |     |
-| 玩家是否跳跃 | Bool |     |
+When player move, the client will send a packet to the server.
 
-## 玩家自己的物品包 client -> server
+### Serverbound
 
-需要该操作才发送
+For normal movement:
 
-| 数据名称           | 数据类型              | 描述                                  |
-|:--------------:|:-----------------:|:-----------------------------------:|
-| 玩家ID           | byte              |                                     |
-| 玩家丢弃的物品在背包中的序号 | int               | 负数为不丢弃，对于[0,35]的整数，背包对应位置存在非空物品才能丢弃 |
-| 玩家背包交换物品       | pair<int x,int y> | 负数为不丢弃，       交换x与y物品               |
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "forward",
+    "sideward",
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "player_move"
+    },
+    "forward": {
+      "description": "Whether the player is moving forward. -1 for backward, 0 for not moving, 1 for forward",
+      "enum": [-1, 0, 1]
+    },
+    "sideward": {
+      "description": "Whether the player is moving sideward. -1 for left, 0 for not moving, 1 for right",
+      "enum": [-1, 0, 1]
+    }
+  }
+}
+```
+
+For updating orientation:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "orientation"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "player_update_orientation"
+    },
+    "orientation": {
+      "description": "The player orientation",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "yaw",
+        "pitch"
+      ],
+      "properties": {
+        "yaw": {
+          "description": "The player yaw",
+          "mininum": 0,
+          "exclusiveMaximum": 360,
+          "type": "integer"
+        },
+        "pitch": {
+          "description": "The player pitch",
+          "mininum": -90,
+          "maximum": 90,
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
+```
+
+## Player Update Information
+
+### Clientbound
+
+When player status is updated, the server will send a packet to the client.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "health",
+    "experiments"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "clientbound"
+    },
+    "type": {
+      "const": "player_update_status"
+    },
+    "health": {
+      "description": "The player health",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "experiments": {
+      "description": "The player experiments",
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
+```
+
+## Player Update Inventory
+
+### Clientbound
+
+When player inventory is updated, the server will send a packet to the client. All slots should be sent except empty slots.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "inventory",
+    "main_hand"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "clientbound"
+    },
+    "type": {
+      "const": "player_update_inventory"
+    },
+    "inventory": {
+      "description": "The player inventory. The first 9 slots are hotbar slots.",
+      "type": "array",
+      "maxItems": 36,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slot",
+          "id",
+          "count",
+          "damage"
+        ],
+        "properties": {
+          "slot": {
+            "description": "The slot index",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 35
+          },
+          "id": {
+            "description": "The item id",
+            "type": "integer"
+          },
+          "count": {
+            "description": "The item count",
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "main_hand": {
+      "description": "The main hand selected slot index",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    }
+  }
+}
+```
+
+### Serverbound
+
+Players can operate the inventory by sending a packet to the server.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "slot",
+    "count"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "player_drop_item"
+    },
+    "slot": {
+      "description": "The slot index",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 35
+    },
+    "count": {
+      "description": "The item count to drop",
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
+```
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "slots"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "player_swap_item"
+    },
+    "slots": {
+      "description": "The slot indexes to swap",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 35
+      }
+    }
+  }
+}
 ```
