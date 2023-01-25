@@ -160,6 +160,7 @@
               "additionalProperties": false,
               "required": [
                 "entity_id",
+                "token",
                 "health",
                 "experiments",
                 "inventory",
@@ -169,6 +170,10 @@
                 "entity_id": {
                   "description": "The entity unique ID",
                   "type": "integer"
+                },
+                "token": {
+                  "description": "The player token",
+                  "type": "string"
                 },
                 "health": {
                   "description": "The player health",
