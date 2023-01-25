@@ -512,8 +512,7 @@ When the player moves to a new section, the server will send a packet to the cli
         "required": [
           "entity_id",
           "position",
-          "orientation",
-          "entity_definiion"
+          "orientation"
         ],
         "properties": {
           "entity_id": {
@@ -566,10 +565,6 @@ When the player moves to a new section, the server will send a packet to the cli
                 "type": "integer"
               }
             }
-          },
-          "entity_definition" {
-            "description": "The entity definition",
-            "type": "object"
           }
         }
       }
@@ -615,8 +610,7 @@ When the player moves to a new section, the server will send a packet to the cli
         "required": [
           "entity_id",
           "position",
-          "orientation",
-          "entity_definiion"
+          "orientation"
         ],
         "properties": {
           "entity_id": {
@@ -669,10 +663,6 @@ When the player moves to a new section, the server will send a packet to the cli
                 "type": "integer"
               }
             }
-          },
-          "entity_definition" {
-            "description": "The entity definition",
-            "type": "object"
           }
         }
       }

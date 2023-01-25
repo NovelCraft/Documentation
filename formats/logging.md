@@ -95,8 +95,7 @@
               "required": [
                 "entity_id",
                 "position",
-                "orientation",
-                "entity_definiion"
+                "orientation"
               ],
               "properties": {
                 "entity_id": {
@@ -149,10 +148,6 @@
                       "type": "integer"
                     }
                   }
-                },
-                "entity_definition" {
-                  "description": "The entity definition",
-                  "type": "object"
                 }
               }
             }
