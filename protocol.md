@@ -26,7 +26,7 @@ NovelCraft transmits data via WebSocket protocol. Each data packet is a JSON obj
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "required": [
     "bound_to",
@@ -54,12 +54,14 @@ When an error occurs, the server will send a packet with the following format:
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "bound_to",
-    "type"
+    "type",
+    "code",
+    "message"
   ],
   "properties": {
     "bound_to": {
@@ -71,6 +73,14 @@ When an error occurs, the server will send a packet with the following format:
     },
     "type": {
       "const": "error"
+    },
+    "code": {
+      "description": "The error code",
+      "type": "integer"
+    },
+    "message": {
+      "description": "The error message",
+      "type": "string"
     }
   }
 }
@@ -84,7 +94,7 @@ When a player connects to the server, the client will send a handshake packet to
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -121,7 +131,7 @@ When a player connects to the server, the client will send a handshake packet to
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -149,6 +159,160 @@ When a player connects to the server, the client will send a handshake packet to
 }
 ```
 
+## Get Blocks and Entities
+
+The client can request the server to send the blocks and entities around the player.
+
+### Serverbound
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "get_blocks_and_entities_request"
+    }
+  }
+}
+```
+
+### Clientbound
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "clientbound"
+    },
+    "type": {
+      "const": "get_blocks_and_entities_response"
+    },
+    "sections": {
+      "description": "The sections to update",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "x",
+          "y",
+          "z",
+          "blocks"
+        ],
+        "properties": {
+          "x": {
+            "description": "The x coordinate of the section",
+            "type": "integer"
+          },
+          "y": {
+            "description": "The y coordinate of the section",
+            "type": "integer"
+          },
+          "z": {
+            "description": "The z coordinate of the section",
+            "type": "integer"
+          },
+          "blocks": {
+            "description": "The blocks in the section which can be accessed by `blocks[x][y][z]`",
+            "type": "array",
+            "minItems": 16,
+            "maxItems": 16,
+            "items": {
+              "type": "array",
+              "minItems": 16,
+              "maxItems": 16,
+              "items": {
+                "type": "array",
+                "minItems": 16,
+                "maxItems": 16,
+                "items": {
+                  "description": "The block ID",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Get State
+
+The client can request the server to send the game state.
+
+### Serverbound
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "get_state_request"
+    }
+  }
+}
+```
+
+### Clientbound
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "state"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "clientbound"
+    },
+    "type": {
+      "const": "get_state_response"
+    },
+    "state": {
+      "description": "The game state",
+      "enum": [
+        "waiting",
+        "playing",
+        "paused",
+        "finished"
+      ]
+    }
+  }
+}
+```
+
 ## Update Blocks
 
 When blocks around the player are updated, the server will send a packet to the client to update the blocks. The section position is the position of the section whose coordinates are the minimum of the coordinates of the blocks in the section.
@@ -159,9 +323,11 @@ The position of the block in the section is the position of the block relative t
 
 In every tick, the server will send a packet to the client to update the block changes around the player.
 
+When the player moves to a new section, the server will send a packet to the client to update the blocks in the sections around the player which cannot be seen by the player before.
+
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -234,73 +400,75 @@ In every tick, the server will send a packet to the client to update the block c
           }
         }
       }
-    }
-  }
-}
-```
-
-In every 20 ticks, the server will send a packet to the client to update all the blocks around the player.
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "clientbound"
     },
-    "type": {
-      "const": "update_blocks"
-    },
-    "sections": {
-      "description": "The sections to update",
+    "entities": {
+      "description": "The entities to update",
       "type": "array",
       "items": {
+        "description": "The entity to update",
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "x",
-          "y",
-          "z",
-          "blocks"
+          "entity_id",
+          "position",
+          "orientation",
+          "entity_definiion"
         ],
         "properties": {
-          "x": {
-            "description": "The x coordinate of the section",
+          "entity_id": {
+            "description": "The entity unique ID",
             "type": "integer"
           },
-          "y": {
-            "description": "The y coordinate of the section",
-            "type": "integer"
-          },
-          "z": {
-            "description": "The z coordinate of the section",
-            "type": "integer"
-          },
-          "blocks": {
-            "description": "The blocks in the section which can be accessed by `blocks[x][y][z]`",
-            "type": "array",
-            "minItems": 16,
-            "maxItems": 16,
-            "items": {
-              "type": "array",
-              "minItems": 16,
-              "maxItems": 16,
-              "items": {
-                "type": "array",
-                "minItems": 16,
-                "maxItems": 16,
-                "items": {
-                  "description": "The block ID",
-                  "type": "integer"
-                }
+          "position": {
+            "description": "The entity position",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "properties": {
+              "x": {
+                "description": "The x coordinate of the entity",
+                "type": "number"
+              },
+              "y": {
+                "description": "The y coordinate of the entity",
+                "type": "number"
+              },
+              "z": {
+                "description": "The z coordinate of the entity",
+                "type": "number"
               }
             }
+          },
+          "orientation": {
+            "description": "The entity orientation",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "yaw",
+              "pitch"
+            ],
+            "properties": {
+              "yaw": {
+                "description": "The entity yaw",
+                "mininum": 0,
+                "exclusiveMaximum": 360,
+                "type": "integer"
+              },
+              "pitch": {
+                "description": "The entity pitch",
+                "mininum": -90,
+                "maximum": 90,
+                "type": "integer"
+              }
+            }
+          },
+          "entity_definition" {
+            "description": "The entity definition",
+            "type": "object"
           }
         }
       }
@@ -317,9 +485,11 @@ When entities around the player are updated, the server will send a packet to th
 
 In every tick, the server will send a packet to update the changed entities.
 
+When the player moves to a new section, the server will send a packet to the client to update the entities in the sections around the player which cannot be seen by the player before.
+
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -410,270 +580,15 @@ In every tick, the server will send a packet to update the changed entities.
 }
 ```
 
-In every 20 ticks, the server will send a packet to update all the entities around the player.
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "entities"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "clientbound"
-    },
-    "type": {
-      "const": "update_entities"
-    },
-    "entities": {
-      "description": "The entities to update",
-      "type": "array",
-      "items": {
-        "description": "The entity to update",
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "entity_id",
-          "position",
-          "orientation",
-          "entity_definiion"
-        ],
-        "properties": {
-          "entity_id": {
-            "description": "The entity unique ID",
-            "type": "integer"
-          },
-          "position": {
-            "description": "The entity position",
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "x",
-              "y",
-              "z"
-            ],
-            "properties": {
-              "x": {
-                "description": "The x coordinate of the entity",
-                "type": "number"
-              },
-              "y": {
-                "description": "The y coordinate of the entity",
-                "type": "number"
-              },
-              "z": {
-                "description": "The z coordinate of the entity",
-                "type": "number"
-              }
-            }
-          },
-          "orientation": {
-            "description": "The entity orientation",
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "yaw",
-              "pitch"
-            ],
-            "properties": {
-              "yaw": {
-                "description": "The entity yaw",
-                "mininum": 0,
-                "exclusiveMaximum": 360,
-                "type": "integer"
-              },
-              "pitch": {
-                "description": "The entity pitch",
-                "mininum": -90,
-                "maximum": 90,
-                "type": "integer"
-              }
-            }
-          },
-          "entity_definition" {
-            "description": "The entity definition",
-            "type": "object"
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-## Update Time
-
-In every second, the server will send a packet to update the time.
+## Update Player Information
 
 ### Clientbound
 
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "time",
-    "ticks"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "clientbound"
-    },
-    "type": {
-      "const": "update_time"
-    },
-    "time": {
-      "description": "The time in milliseconds since the server started",
-      "type": "integer"
-    },
-    "ticks": {
-      "description": "The ticks since the server started",
-      "type": "integer"
-    }
-  }
-}
-```
-
-## Player Act
-
-When player do some actions, such as moving, jumping, attacking, using items, the client will send a packet to the server.
-
-### Serverbound
+When a player's information is updated, the server will send a packet to the client.
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "action"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
-    },
-    "type": {
-      "const": "player_act"
-    },
-    "action": {
-      "description": "The action the player did",
-      "type": "string",
-      "enum": [
-        "jump",
-        "attack_click",
-        "attack_start",
-        "attack_end",
-        "use_click",
-        "use_start",
-        "use_end"
-      ]
-    }
-  }
-}
-```
-
-## Player Move
-
-When player move, the client will send a packet to the server.
-
-### Serverbound
-
-For normal movement:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "forward",
-    "sideward",
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
-    },
-    "type": {
-      "const": "player_move"
-    },
-    "forward": {
-      "description": "Whether the player is moving forward. -1 for backward, 0 for not moving, 1 for forward",
-      "enum": [-1, 0, 1]
-    },
-    "sideward": {
-      "description": "Whether the player is moving sideward. -1 for left, 0 for not moving, 1 for right",
-      "enum": [-1, 0, 1]
-    }
-  }
-}
-```
-
-For updating orientation:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "orientation"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
-    },
-    "type": {
-      "const": "player_update_orientation"
-    },
-    "orientation": {
-      "description": "The player orientation",
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "yaw",
-        "pitch"
-      ],
-      "properties": {
-        "yaw": {
-          "description": "The player yaw",
-          "mininum": 0,
-          "exclusiveMaximum": 360,
-          "type": "integer"
-        },
-        "pitch": {
-          "description": "The player pitch",
-          "mininum": -90,
-          "maximum": 90,
-          "type": "integer"
-        }
-      }
-    }
-  }
-}
-```
-
-## Player Update Information
-
-### Clientbound
-
-When player status is updated, the server will send a packet to the client.
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -704,7 +619,7 @@ When player status is updated, the server will send a packet to the client.
 }
 ```
 
-## Player Update Inventory
+## Update Player Inventory
 
 ### Clientbound
 
@@ -712,7 +627,7 @@ When player inventory is updated, the server will send a packet to the client. A
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -770,13 +685,95 @@ When player inventory is updated, the server will send a packet to the client. A
 }
 ```
 
+## Update Time
+
+In every second, the server will send a packet to update the time.
+
+### Clientbound
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "time",
+    "ticks"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "clientbound"
+    },
+    "type": {
+      "const": "update_time"
+    },
+    "time": {
+      "description": "The time in milliseconds since the server started",
+      "type": "integer"
+    },
+    "ticks": {
+      "description": "The ticks since the server started",
+      "type": "integer"
+    }
+  }
+}
+```
+
+## Perform Instant Action
+
+When player do some actions, such as jumping, attacking, using items, the client will send a packet to the server.
+
+### Serverbound
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "action"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "perform_instant_action"
+    },
+    "action": {
+      "description": "The action the player did",
+      "type": "string",
+      "enum": [
+        "jump",
+        "attack_click",
+        "attack_start",
+        "attack_end",
+        "use_click",
+        "use_start",
+        "use_end"
+      ]
+    }
+  }
+}
+```
+
+## Perform Inventory Action
+
+When player perform an inventory action, such as moving items, dropping items, the client will send a packet to the server.
+
 ### Serverbound
 
 Players can operate the inventory by sending a packet to the server.
 
+For dropping items:
+
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -790,7 +787,7 @@ Players can operate the inventory by sending a packet to the server.
       "const": "serverbound"
     },
     "type": {
-      "const": "player_drop_item"
+      "const": "perform_inventory_action_drop"
     },
     "slot": {
       "description": "The slot index",
@@ -807,9 +804,11 @@ Players can operate the inventory by sending a packet to the server.
 }
 ```
 
+For swapping items in inventory:
+
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -822,7 +821,7 @@ Players can operate the inventory by sending a packet to the server.
       "const": "serverbound"
     },
     "type": {
-      "const": "player_swap_item"
+      "const": "perform_inventory_action_swap"
     },
     "slots": {
       "description": "The slot indexes to swap",
@@ -834,6 +833,119 @@ Players can operate the inventory by sending a packet to the server.
         "type": "integer",
         "minimum": 0,
         "maximum": 35
+      }
+    }
+  }
+}
+```
+
+For selecting main hand:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "slot"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "perform_inventory_action_select"
+    },
+    "slot": {
+      "description": "The slot index",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    }
+  }
+}
+```
+
+## Perform Movement
+
+When player move, the client will send a packet to the server.
+
+### Serverbound
+
+For normal movement:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "forward",
+    "sideward",
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "perform_movement_normal"
+    },
+    "forward": {
+      "description": "Whether the player is moving forward. -1 for backward, 0 for not moving, 1 for forward",
+      "enum": [-1, 0, 1]
+    },
+    "sideward": {
+      "description": "Whether the player is moving sideward. -1 for left, 0 for not moving, 1 for right",
+      "enum": [-1, 0, 1]
+    }
+  }
+}
+```
+
+For updating orientation:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bound_to",
+    "type",
+    "orientation"
+  ],
+  "properties": {
+    "bound_to": {
+      "const": "serverbound"
+    },
+    "type": {
+      "const": "perform_movement_orientation"
+    },
+    "orientation": {
+      "description": "The player orientation",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "yaw",
+        "pitch"
+      ],
+      "properties": {
+        "yaw": {
+          "description": "The player yaw",
+          "mininum": 0,
+          "exclusiveMaximum": 360,
+          "type": "integer"
+        },
+        "pitch": {
+          "description": "The player pitch",
+          "mininum": -90,
+          "maximum": 90,
+          "type": "integer"
+        }
       }
     }
   }
