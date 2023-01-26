@@ -7,7 +7,6 @@
   "additionalProperties": false,
   "required": [
     "type",
-    "level",
     "sections",
     "entities",
     "players"
