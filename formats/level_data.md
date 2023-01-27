@@ -38,31 +38,19 @@
             "type": "integer"
           },
           "blocks": {
-            "description": "The blocks in the section",
+            "description": "The blocks in the section which can be accessed by `blocks[x][y][z]`",
             "type": "array",
+            "minItems": 16,
+            "maxItems": 16,
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "x",
-                "y",
-                "z",
-                "block_id"
-              ],
-              "properties": {
-                "x": {
-                  "description": "The x coordinate of the block",
-                  "type": "integer"
-                },
-                "y": {
-                  "description": "The y coordinate of the block",
-                  "type": "integer"
-                },
-                "z": {
-                  "description": "The z coordinate of the block",
-                  "type": "integer"
-                },
-                "block_id": {
+              "type": "array",
+              "minItems": 16,
+              "maxItems": 16,
+              "items": {
+                "type": "array",
+                "minItems": 16,
+                "maxItems": 16,
+                "items": {
                   "description": "The block ID",
                   "type": "integer"
                 }
