@@ -12,6 +12,9 @@
     "players"
   ],
   "properties": {
+    "type": {
+      "const": "level_data"
+    },
     "sections": {
       "description": "The sections",
       "type": "array",
