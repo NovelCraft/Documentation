@@ -790,7 +790,6 @@ In every second, the server will send a packet to update the time.
   "required": [
     "bound_to",
     "type",
-    "time",
     "ticks"
   ],
   "properties": {
@@ -799,10 +798,6 @@ In every second, the server will send a packet to update the time.
     },
     "type": {
       "const": "update_time"
-    },
-    "time": {
-      "description": "The time in milliseconds since the server started",
-      "type": "integer"
     },
     "ticks": {
       "description": "The ticks since the server started",
