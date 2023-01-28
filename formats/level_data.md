@@ -41,23 +41,12 @@
             "type": "integer"
           },
           "blocks": {
-            "description": "The blocks in the section which can be accessed by `blocks[x][y][z]`",
+            "description": "The blocks in the section which can be accessed by `blocks[x*256+y*16+z]`",
             "type": "array",
-            "minItems": 16,
-            "maxItems": 16,
-            "items": {
-              "type": "array",
-              "minItems": 16,
-              "maxItems": 16,
-              "items": {
-                "type": "array",
-                "minItems": 16,
-                "maxItems": 16,
-                "items": {
-                  "description": "The block ID",
-                  "type": "integer"
-                }
-              }
+            "minItems": 4096,
+            "maxItems": 4096,
+              "description": "The block ID",
+              "type": "integer"
             }
           }
         }

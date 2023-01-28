@@ -194,7 +194,9 @@ The client can request the server to send the blocks and entities around the pla
   "additionalProperties": false,
   "required": [
     "bound_to",
-    "type"
+    "type",
+    "sections",
+    "entities"
   ],
   "properties": {
     "bound_to": {
@@ -229,22 +231,79 @@ The client can request the server to send the blocks and entities around the pla
             "type": "integer"
           },
           "blocks": {
-            "description": "The blocks in the section which can be accessed by `blocks[x][y][z]`",
+            "description": "The blocks in the section which can be accessed by `blocks[x*256+y*16+z]`",
             "type": "array",
-            "minItems": 16,
-            "maxItems": 16,
+            "minItems": 4096,
+            "maxItems": 4096,
             "items": {
-              "type": "array",
-              "minItems": 16,
-              "maxItems": 16,
-              "items": {
-                "type": "array",
-                "minItems": 16,
-                "maxItems": 16,
-                "items": {
-                  "description": "The block ID",
-                  "type": "integer"
-                }
+              "description": "The block ID",
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "entities": {
+      "description": "The entities",
+      "type": "array",
+      "items": {
+        "description": "An entity",
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entity_id",
+          "position",
+          "orientation"
+        ],
+        "properties": {
+          "entity_id": {
+            "description": "The entity unique ID",
+            "type": "integer"
+          },
+          "position": {
+            "description": "The entity position",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y",
+              "z"
+            ],
+            "properties": {
+              "x": {
+                "description": "The x coordinate of the entity",
+                "type": "number"
+              },
+              "y": {
+                "description": "The y coordinate of the entity",
+                "type": "number"
+              },
+              "z": {
+                "description": "The z coordinate of the entity",
+                "type": "number"
+              }
+            }
+          },
+          "orientation": {
+            "description": "The entity orientation",
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "yaw",
+              "pitch"
+            ],
+            "properties": {
+              "yaw": {
+                "description": "The entity yaw",
+                "mininum": 0,
+                "exclusiveMaximum": 360,
+                "type": "integer"
+              },
+              "pitch": {
+                "description": "The entity pitch",
+                "mininum": -90,
+                "maximum": 90,
+                "type": "integer"
               }
             }
           }
@@ -433,7 +492,8 @@ When the player moves to a new section, the server will send a packet to the cli
   "additionalProperties": false,
   "required": [
     "bound_to",
-    "type"
+    "type",
+    "blocks"
   ],
   "properties": {
     "bound_to": {
@@ -442,8 +502,8 @@ When the player moves to a new section, the server will send a packet to the cli
     "type": {
       "const": "update_block_changes"
     },
-    "sections": {
-      "description": "The sections to update",
+    "blocks": {
+      "description": "The blocks in the section",
       "type": "array",
       "items": {
         "type": "object",
@@ -452,119 +512,24 @@ When the player moves to a new section, the server will send a packet to the cli
           "x",
           "y",
           "z",
-          "blocks"
+          "block_id"
         ],
         "properties": {
           "x": {
-            "description": "The x coordinate of the section",
+            "description": "The x coordinate of the block",
             "type": "integer"
           },
           "y": {
-            "description": "The y coordinate of the section",
+            "description": "The y coordinate of the block",
             "type": "integer"
           },
           "z": {
-            "description": "The z coordinate of the section",
+            "description": "The z coordinate of the block",
             "type": "integer"
           },
-          "blocks": {
-            "description": "The blocks in the section",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "x",
-                "y",
-                "z",
-                "block_id"
-              ],
-              "properties": {
-                "x": {
-                  "description": "The x coordinate of the block",
-                  "type": "integer"
-                },
-                "y": {
-                  "description": "The y coordinate of the block",
-                  "type": "integer"
-                },
-                "z": {
-                  "description": "The z coordinate of the block",
-                  "type": "integer"
-                },
-                "block_id": {
-                  "description": "The block ID",
-                  "type": "integer"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "entities": {
-      "description": "The entities to update",
-      "type": "array",
-      "items": {
-        "description": "The entity to update",
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "entity_id",
-          "position",
-          "orientation"
-        ],
-        "properties": {
-          "entity_id": {
-            "description": "The entity unique ID",
+          "block_id": {
+            "description": "The block ID",
             "type": "integer"
-          },
-          "position": {
-            "description": "The entity position",
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "x",
-              "y",
-              "z"
-            ],
-            "properties": {
-              "x": {
-                "description": "The x coordinate of the entity",
-                "type": "number"
-              },
-              "y": {
-                "description": "The y coordinate of the entity",
-                "type": "number"
-              },
-              "z": {
-                "description": "The z coordinate of the entity",
-                "type": "number"
-              }
-            }
-          },
-          "orientation": {
-            "description": "The entity orientation",
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "yaw",
-              "pitch"
-            ],
-            "properties": {
-              "yaw": {
-                "description": "The entity yaw",
-                "mininum": 0,
-                "exclusiveMaximum": 360,
-                "type": "integer"
-              },
-              "pitch": {
-                "description": "The entity pitch",
-                "mininum": -90,
-                "maximum": 90,
-                "type": "integer"
-              }
-            }
           }
         }
       }
