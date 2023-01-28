@@ -14,6 +14,6 @@
 
   - [Recipes](formats/recipes.md)
 
-  - [Logging](formats/logging.md)
+  - [Record](formats/record.md)
 
   - [Level Data](formats/level_data.md)

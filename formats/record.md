@@ -1,4 +1,4 @@
-# Logging Definition Format
+# Record Definition Format
 
 ```json
 {
@@ -7,20 +7,19 @@
   "additionalProperties": false,
   "required": [
     "type",
-    "logging"
+    "record"
   ],
   "properties": {
     "type": {
-      "const": "logging"
+      "const": "record"
     },
-    "logging": {
+    "record": {
       "type": "array",
       "items": {
-        "description": "A logging item",
+        "description": "A record item",
         "type": "object",
         "required": [
           "ticks",
-          "sections",
           "blocks",
           "entities",
           "players"
@@ -28,44 +27,6 @@
         "properties": {
           "ticks": {
             "type": "integer"
-          },
-          "sections": {
-            "description": "The sections to update",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "x",
-                "y",
-                "z",
-                "blocks"
-              ],
-              "properties": {
-                "x": {
-                  "description": "The x coordinate of the section",
-                  "type": "integer"
-                },
-                "y": {
-                  "description": "The y coordinate of the section",
-                  "type": "integer"
-                },
-                "z": {
-                  "description": "The z coordinate of the section",
-                  "type": "integer"
-                },
-                "blocks": {
-                  "description": "The blocks in the section which can be accessed by `blocks[x*256+y*16+z]`",
-                  "type": "array",
-                  "minItems": 4096,
-                  "maxItems": 4096,
-                  "items": {
-                    "description": "The block ID",
-                    "type": "integer"
-                  }
-                }
-              }
-            }
           },
           "blocks": {
             "description": "The blocks in the section",
