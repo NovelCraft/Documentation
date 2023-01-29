@@ -19,7 +19,7 @@
       "additionalProperties": false,
       "required": [
         "type",
-        "loot_table_id"
+        "id"
       ],
       "properties": {
         "type": {
@@ -28,7 +28,8 @@
             "entity"
           ]
         },
-        "loot_table_id": {
+        "id": {
+          "description": "Block ID or entity ID",
           "type": "integer"
         },
       }
