@@ -1,5 +1,7 @@
 # Level Data Format
 
+The level data file is a zipped file containing the level data in JSON format with file name `level_data.json`.
+
 ```json
 {
   "$schema": "https://json-schema.org/draft-07/schema",
