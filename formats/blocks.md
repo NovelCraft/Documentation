@@ -34,7 +34,30 @@
     "components": {
       "type": "object",
       "additionalProperties": false,
-      "properties": {}
+      "properties": {
+        "collision_box": {
+          "type": "object",
+          "additionalProperties": false
+        },
+        "destructible_by_mining": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "seconds_to_destroy"
+          ],
+          "properties": {
+            "seconds_to_destroy": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "friction": {
+          "type": "number",
+          "minimum": 0,
+          "maxinum": 1
+        }
+      }
     }
   }
 }

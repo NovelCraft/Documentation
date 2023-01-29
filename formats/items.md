@@ -26,8 +26,7 @@
           "type": "string"
         },
         "item_id": {
-          "type": "integer",
-          "minimum": 0
+          "type": "integer"
         },
       }
     },
@@ -35,11 +34,71 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "digger": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "destroy_speeds"
+          ],
+          "properties": {
+            "destroy_speeds": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "block_id",
+                  "speed_modifier"
+                ],
+                "properties": {
+                  "block_id": {
+                    "type": "integer"
+                  },
+                  "speed_modifier": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "food": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "can_always_eat",
+            "nutrition"
+          ],
+          "properties": {
+            "can_always_eat": {
+              "type": "boolean"
+            },
+            "nutrition": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
         "max_stack_size": {
           "type": "integer",
           "minimum": 1,
           "maximum": 64
         },
+        "weapon": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "damage"
+          ],
+          "properties": {
+            "damage": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
       }
     }
   }

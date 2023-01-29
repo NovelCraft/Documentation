@@ -170,7 +170,7 @@
                     "additionalProperties": false,
                     "required": [
                       "slot",
-                      "id",
+                      "item_id",
                       "count",
                       "damage"
                     ],
@@ -181,7 +181,7 @@
                         "minimum": 0,
                         "maximum": 35
                       },
-                      "id": {
+                      "item_id": {
                         "description": "The item id",
                         "type": "integer"
                       },

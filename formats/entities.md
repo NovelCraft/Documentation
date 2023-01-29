@@ -26,8 +26,7 @@
           "type": "string"
         },
         "entity_id": {
-          "type": "integer",
-          "minimum": 0
+          "type": "integer"
         },
       }
     },
@@ -35,23 +34,83 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "attack": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "damage"
+          ],
+          "properties": {
+            "damage": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
         "collision_box": {
           "type": "object",
           "additionalProperties": false,
           "required": [
-            "width",
-            "height"
+            "height",
+            "width"
           ],
           "properties": {
-            "width": {
+            "height": {
               "type": "number",
               "exclusiveMinimum": 0
             },
-            "height": {
+            "width": {
               "type": "number",
               "exclusiveMinimum": 0
             }
           }
+        },
+        "health": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "max": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "movement": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "movement.jump": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "physics": {
+          "type": "object",
+          "additionalProperties": false
         }
       }
     }

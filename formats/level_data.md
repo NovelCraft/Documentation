@@ -164,7 +164,7 @@ The level data file is a zipped file containing the level data in JSON format wi
               "additionalProperties": false,
               "required": [
                 "slot",
-                "id",
+                "item_id",
                 "count",
                 "damage"
               ],
@@ -175,7 +175,7 @@ The level data file is a zipped file containing the level data in JSON format wi
                   "minimum": 0,
                   "maximum": 35
                 },
-                "id": {
+                "item_id": {
                   "description": "The item id",
                   "type": "integer"
                 },
