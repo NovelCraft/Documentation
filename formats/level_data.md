@@ -1,4 +1,4 @@
-# Level Data Definition Format
+# Level Data Format
 
 ```json
 {

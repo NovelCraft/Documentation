@@ -1,4 +1,4 @@
-# Record Definition Format
+# Record Format
 
 ```json
 {
