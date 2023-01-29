@@ -19,10 +19,7 @@
         "description": "A record item",
         "type": "object",
         "required": [
-          "ticks",
-          "blocks",
-          "entities",
-          "players"
+          "ticks"
         ],
         "properties": {
           "ticks": {
