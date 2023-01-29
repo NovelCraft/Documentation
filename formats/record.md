@@ -13,7 +13,7 @@
     "type": {
       "const": "record"
     },
-    "record": {
+    "records": {
       "type": "array",
       "items": {
         "description": "A record item",
