@@ -65,9 +65,7 @@
               "type": "object",
               "additionalProperties": false,
               "required": [
-                "entity_id",
-                "position",
-                "orientation"
+                "entity_id"
               ],
               "properties": {
                 "entity_id": {
@@ -132,11 +130,6 @@
               "additionalProperties": false,
               "required": [
                 "entity_id",
-                "token",
-                "health",
-                "experiments",
-                "inventory",
-                "main_hand"
               ],
               "properties": {
                 "entity_id": {
