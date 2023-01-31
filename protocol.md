@@ -138,7 +138,7 @@ When a player connects to the server, the client will send a handshake packet to
     "bound_to",
     "type",
     "token",
-    "entity_id"
+    "unique_id"
   ],
   "properties": {
     "bound_to": {
@@ -151,8 +151,8 @@ When a player connects to the server, the client will send a handshake packet to
       "description": "The token of the player",
       "type": "string"
     },
-    "entity_id": {
-      "description": "The entity id of the player",
+    "unique_id": {
+      "description": "The unique id of the player",
       "type": "integer"
     }
   }
@@ -251,12 +251,12 @@ The client can request the server to send the blocks and entities around the pla
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "entity_id",
+          "unique_id",
           "position",
           "orientation"
         ],
         "properties": {
-          "entity_id": {
+          "unique_id": {
             "description": "The entity unique ID",
             "type": "integer"
           },
@@ -382,7 +382,7 @@ The client can request the server to send the player information.
         "additionalProperties": false,
         "required": [
           "slot",
-          "id",
+          "item_id",
           "count",
           "damage"
         ],
@@ -393,7 +393,7 @@ The client can request the server to send the player information.
             "minimum": 0,
             "maximum": 35
           },
-          "id": {
+          "item_id": {
             "description": "The item id",
             "type": "integer"
           },
@@ -573,12 +573,12 @@ When the player moves to a new section, the server will send a packet to the cli
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "entity_id",
+          "unique_id",
           "position",
           "orientation"
         ],
         "properties": {
-          "entity_id": {
+          "unique_id": {
             "description": "The entity unique ID",
             "type": "integer"
           },
@@ -708,7 +708,7 @@ When player inventory is updated, the server will send a packet to the client. A
         "additionalProperties": false,
         "required": [
           "slot",
-          "id",
+          "item_id",
           "count",
           "damage"
         ],
@@ -719,7 +719,7 @@ When player inventory is updated, the server will send a packet to the client. A
             "minimum": 0,
             "maximum": 35
           },
-          "id": {
+          "item_id": {
             "description": "The item id",
             "type": "integer"
           },

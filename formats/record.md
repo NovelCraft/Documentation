@@ -65,10 +65,15 @@
               "type": "object",
               "additionalProperties": false,
               "required": [
-                "entity_id"
+                "entity_id",
+                "unique_id"
               ],
               "properties": {
                 "entity_id": {
+                  "description": "The entity ID",
+                  "type": "integer"
+                },
+                "unique_id": {
                   "description": "The entity unique ID",
                   "type": "integer"
                 },
@@ -129,11 +134,11 @@
               "type": "object",
               "additionalProperties": false,
               "required": [
-                "entity_id",
+                "unique_id",
               ],
               "properties": {
-                "entity_id": {
-                  "description": "The entity unique ID",
+                "unique_id": {
+                  "description": "The player's unique ID",
                   "type": "integer"
                 },
                 "token": {
@@ -197,11 +202,11 @@
               "type": "object",
               "additionalProperties": false,
               "required": [
-                "entity_id"
+                "unique_id"
               ],
               "properties": {
-                "entity_id": {
-                  "description": "The entity unique ID",
+                "unique_id": {
+                  "description": "The player's unique ID",
                   "type": "integer"
                 },
                 "instant": {

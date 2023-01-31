@@ -63,11 +63,16 @@ The level data file is a zipped file containing the level data in JSON format wi
         "additionalProperties": false,
         "required": [
           "entity_id",
+          "unique_id",
           "position",
           "orientation"
         ],
         "properties": {
           "entity_id": {
+            "description": "The entity ID",
+            "type": "integer"
+          },
+          "unique_id": {
             "description": "The entity unique ID",
             "type": "integer"
           },
@@ -128,7 +133,7 @@ The level data file is a zipped file containing the level data in JSON format wi
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "entity_id",
+          "unique_id",
           "token",
           "health",
           "experiments",
@@ -136,8 +141,8 @@ The level data file is a zipped file containing the level data in JSON format wi
           "main_hand"
         ],
         "properties": {
-          "entity_id": {
-            "description": "The entity unique ID",
+          "unique_id": {
+            "description": "The player's unique ID",
             "type": "integer"
           },
           "token": {
