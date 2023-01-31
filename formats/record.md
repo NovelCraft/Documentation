@@ -152,17 +152,15 @@
                   "minimum": 0
                 },
                 "inventory": {
-                  "description": "The player inventory. The first 9 slots are hotbar slots.",
+                  "description": "The player inventory changes.",
                   "type": "array",
-                  "maxItems": 36,
                   "items": {
                     "type": "object",
                     "additionalProperties": false,
                     "required": [
                       "slot",
                       "item_id",
-                      "count",
-                      "damage"
+                      "count"
                     ],
                     "properties": {
                       "slot": {
