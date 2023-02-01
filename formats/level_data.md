@@ -76,6 +76,10 @@ The level data file is a zipped file containing the level data in JSON format wi
             "description": "The entity unique ID",
             "type": "integer"
           },
+          "data_value": {
+            "description": "The entity data value",
+            "type": "integer"
+          },
           "position": {
             "description": "The entity position",
             "type": "object",
