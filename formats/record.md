@@ -77,6 +77,10 @@
                   "description": "The entity unique ID",
                   "type": "integer"
                 },
+                "data_value": {
+                  "description": "The entity's extra data value",
+                  "type": "integer"
+                },
                 "position": {
                   "description": "The entity position",
                   "type": "object",
@@ -123,6 +127,13 @@
                       "type": "integer"
                     }
                   }
+                },
+                "event": {
+                  "description": "The entity event",
+                  "enum": [
+                    "spawn",
+                    "despawn"
+                  ]
                 }
               }
             }

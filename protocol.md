@@ -573,13 +573,20 @@ When the player moves to a new section, the server will send a packet to the cli
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "unique_id",
-          "position",
-          "orientation"
+          "entity_id",
+          "unique_id"
         ],
         "properties": {
+          "entity_id": {
+            "description": "The entity ID",
+            "type": "integer"
+          },
           "unique_id": {
-            "description": "The entity unique ID",
+            "description": "The entity's unique ID",
+            "type": "integer"
+          },
+          "data_value": {
+            "description": "The entity data value",
             "type": "integer"
           },
           "position": {
@@ -628,6 +635,13 @@ When the player moves to a new section, the server will send a packet to the cli
                 "type": "integer"
               }
             }
+          },
+          "event": {
+            "description": "The entity event",
+            "enum": [
+              "spawn",
+              "despawn"
+            ]
           }
         }
       }
@@ -636,11 +650,9 @@ When the player moves to a new section, the server will send a packet to the cli
 }
 ```
 
-## Update Player Status
+## Update Player
 
 ### Clientbound
-
-When a player's status is updated, the server will send a packet to the client.
 
 ```json
 {
@@ -649,16 +661,14 @@ When a player's status is updated, the server will send a packet to the client.
   "additionalProperties": false,
   "required": [
     "bound_to",
-    "type",
-    "health",
-    "experiments"
+    "type"
   ],
   "properties": {
     "bound_to": {
       "const": "clientbound"
     },
     "type": {
-      "const": "update_player_status"
+      "const": "update_player"
     },
     "health": {
       "description": "The player health",
@@ -670,34 +680,6 @@ When a player's status is updated, the server will send a packet to the client.
       "description": "The player experiments",
       "type": "integer",
       "minimum": 0
-    }
-  }
-}
-```
-
-## Update Player Inventory
-
-### Clientbound
-
-When player inventory is updated, the server will send a packet to the client. All slots should be sent except empty slots.
-
-```json
-{
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "inventory",
-    "main_hand"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "clientbound"
-    },
-    "type": {
-      "const": "update_player_inventory"
     },
     "inventory": {
       "description": "The player inventory. The first 9 slots are hotbar slots.",
@@ -741,7 +723,7 @@ When player inventory is updated, the server will send a packet to the client. A
 }
 ```
 
-## Update Time
+## Update Ticks
 
 In every second, the server will send a packet to update the time.
 
@@ -762,19 +744,17 @@ In every second, the server will send a packet to update the time.
       "const": "clientbound"
     },
     "type": {
-      "const": "update_time"
+      "const": "update_ticks"
     },
     "ticks": {
-      "description": "The ticks since the server started",
+      "description": "The ticks since the game started",
       "type": "integer"
     }
   }
 }
 ```
 
-## Perform Instant Action
-
-When player do some actions, such as jumping, attacking, using items, the client will send a packet to the server.
+## Perform Action
 
 ### Serverbound
 
@@ -786,17 +766,21 @@ When player do some actions, such as jumping, attacking, using items, the client
   "required": [
     "bound_to",
     "type",
-    "action"
+    "unique_id"
   ],
   "properties": {
     "bound_to": {
       "const": "serverbound"
     },
     "type": {
-      "const": "perform_instant_action"
+      "const": "perform_action"
     },
-    "action": {
-      "description": "The action the player did",
+    "unique_id": {
+      "description": "The player's unique ID",
+      "type": "integer"
+    },
+    "instant": {
+      "description": "The instant action",
       "type": "string",
       "enum": [
         "jump",
@@ -807,192 +791,103 @@ When player do some actions, such as jumping, attacking, using items, the client
         "use_start",
         "use_end"
       ]
-    }
-  }
-}
-```
-
-## Perform Inventory Action
-
-When player perform an inventory action, such as moving items, dropping items, the client will send a packet to the server.
-
-### Serverbound
-
-Players can operate the inventory by sending a packet to the server.
-
-For dropping items:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "slot",
-    "count"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
     },
-    "type": {
-      "const": "perform_inventory_action_drop"
-    },
-    "slot": {
-      "description": "The slot index",
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 35
-    },
-    "count": {
-      "description": "The item count to drop",
-      "type": "integer",
-      "minimum": 0
-    }
-  }
-}
-```
-
-For swapping items in inventory:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "slots"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
-    },
-    "type": {
-      "const": "perform_inventory_action_swap"
-    },
-    "slots": {
-      "description": "The slot indexes to swap",
-      "type": "array",
-      "minItems": 2,
-      "maxItems": 2,
-      "uniqueItems": true,
-      "items": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 35
+    "inventory_drop": {
+      "description": "The inventory action",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot",
+        "count"
+      ],
+      "properties": {
+        "slot": {
+          "description": "The slot index",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 35
+        },
+        "count": {
+          "description": "The item count",
+          "type": "integer",
+          "minimum": 0
+        }
       }
-    }
-  }
-}
-```
-
-For selecting main hand:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "slot"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
     },
-    "type": {
-      "const": "perform_inventory_action_select"
+    "inventory_swap": {
+      "description": "The inventory action",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slots",
+      ],
+      "properties": {
+        "slots": {
+          "description": "The slot indexes to swap",
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 35
+          }
+        }
+      }
     },
-    "slot": {
-      "description": "The slot index",
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 8
-    }
-  }
-}
-```
-
-## Perform Movement
-
-When player move, the client will send a packet to the server.
-
-### Serverbound
-
-For normal movement:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "forward",
-    "sideward",
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
+    "inventory_select": {
+      "description": "The inventory action",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot",
+      ],
+      "properties": {
+        "slot": {
+          "description": "The slot index",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        }
+      }
     },
-    "type": {
-      "const": "perform_movement_normal"
+    "movement_normal": {
+      "description": "The movement action",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "forward",
+        "sideward",
+      ],
+      "properties": {
+        "forward": {
+          "description": "Whether the player is moving forward. -1 for backward, 0 for not moving, 1 for forward",
+          "enum": [-1, 0, 1]
+        },
+        "sideward": {
+          "description": "Whether the player is moving sideward. -1 for left, 0 for not moving, 1 for right",
+          "enum": [-1, 0, 1]
+        }
+      }
     },
-    "forward": {
-      "description": "Whether the player is moving forward. -1 for backward, 0 for not moving, 1 for forward",
-      "enum": [-1, 0, 1]
-    },
-    "sideward": {
-      "description": "Whether the player is moving sideward. -1 for left, 0 for not moving, 1 for right",
-      "enum": [-1, 0, 1]
-    }
-  }
-}
-```
-
-For updating orientation:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "bound_to",
-    "type",
-    "orientation"
-  ],
-  "properties": {
-    "bound_to": {
-      "const": "serverbound"
-    },
-    "type": {
-      "const": "perform_movement_orientation"
-    },
-    "orientation": {
-      "description": "The player orientation",
+    "movement_orientation": {
+      "description": "The movement action",
       "type": "object",
       "additionalProperties": false,
       "required": [
         "yaw",
-        "pitch"
+        "pitch",
       ],
       "properties": {
         "yaw": {
-          "description": "The player yaw",
+          "description": "The entity yaw",
           "mininum": 0,
           "exclusiveMaximum": 360,
           "type": "integer"
         },
         "pitch": {
-          "description": "The player pitch",
+          "description": "The entity pitch",
           "mininum": -90,
           "maximum": 90,
           "type": "integer"
