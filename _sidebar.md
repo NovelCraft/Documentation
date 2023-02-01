@@ -1,8 +1,12 @@
 - [Home](README.md)
 
+- Tutorials
+
+  - [Export a Level from Minecraft](tutorials/export_a_level_from_minecraft.md)
+
 - [Protocol](protocol.md)
 
-- [Formats](formats/README.md)
+- Formats
 
   - [Blocks](formats/blocks.md)
 
