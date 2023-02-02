@@ -69,7 +69,7 @@ Note that the end position is inclusive.
 Run the following command to convert the level to NovelCraft format:
 
 ```shell
-lip exec converter .\plugins\level_exporter\level_data.json .\dict.json level.dat
+lip exec converter .\plugins\level_exporter\level_data.json .\dict.json mylevel.nclevel
 ```
 
-The NovelCraft level will be generated in the BDS folder. For example, `D:\BDS\level.dat`. Note that this is just the level data file rather than a complete level. To make it a complete level, you should pack it into a zip file and then rename the zip file with extension name .nclevel.
+The NovelCraft level will be generated in the BDS folder. For example, `D:\BDS\mylevel.dat`. Note that this is just the level data file rather than a complete level. To make it a complete level, you should pack it into a zip file and then rename the zip file with extension name .nclevel.
