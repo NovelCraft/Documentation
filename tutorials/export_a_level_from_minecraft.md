@@ -73,3 +73,9 @@ lip exec converter .\plugins\level_exporter\level_data.json .\dict.json mylevel.
 ```
 
 The NovelCraft level will be generated in the BDS folder. For example, `D:\BDS\mylevel.dat`. Note that this is just the level data file rather than a complete level. To make it a complete level, you should pack it into a zip file and then rename the zip file with extension name .nclevel.
+
+## Load the level in NovelCraft
+
+Put the level file in the `worlds` folder under the NovelCraft folder. For example, `D:\NovelCraft\worlds\mylevel.nclevel`. Make sure that there is no folder with the same name as the level file name. For example, `D:\NovelCraft\worlds\mylevel`. If so, delete it, rename it or rename the .nclevel file.
+
+Start NovelCraft and load the level.
