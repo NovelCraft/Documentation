@@ -1,5 +1,5 @@
 # Record Format
-
+ 
 ```json
 {
   "$schema": "https://json-schema.org/draft-07/schema",
