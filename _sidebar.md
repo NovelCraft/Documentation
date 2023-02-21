@@ -4,7 +4,27 @@
 
   - [Export a Level from Minecraft](tutorials/export_a_level_from_minecraft.md)
 
-- [Protocol](protocol.md)
+- Protocols
+
+  - [Overview](protocols/README.md)
+
+  - [Get Blocks and Entities](protocols/get_blocks_and_entities.md)
+
+  - [Get Player Information](protocols/get_player_information.md)
+
+  - [Get State](protocols/get_state.md)
+
+  - [Handshake](protocols/handshake.md)
+
+  - [Perform Action](protocols/perform_action.md)
+
+  - [Update Blocks](protocols/update_blocks.md)
+
+  - [Update Entities](protocols/update_entities.md)
+
+  - [Update Player](protocols/update_player.md)
+
+  - [Update Ticks](protocols/update_ticks.md)
 
 - Formats
 
