@@ -38,6 +38,12 @@
 
   - [Recipes](formats/recipes.md)
 
-  - [Record](formats/record.md)
+  - Record
+
+    - [Overview](formats/record/README.md)
+
+    - [AfterEntityCreate Event Record](formats/record/after_entity_create.md)
+
+    - [AfterEntityPositionChange Event Record](formats/record/after_entity_position_change.md)
 
   - [Level Data](formats/level_data.md)
