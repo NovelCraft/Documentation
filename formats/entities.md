@@ -52,7 +52,8 @@
           "additionalProperties": false,
           "required": [
             "height",
-            "width"
+            "width",
+            "eye_height"
           ],
           "properties": {
             "height": {
@@ -60,6 +61,10 @@
               "exclusiveMinimum": 0
             },
             "width": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "eye_height": {
               "type": "number",
               "exclusiveMinimum": 0
             }
