@@ -6,7 +6,6 @@
 {
     "type": "object",
     "required": [
-        "entity_type_id",
         "creation_list",
     ],
     "properties": {
