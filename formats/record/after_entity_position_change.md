@@ -14,11 +14,11 @@
             "items": {
                 "type": "object",
                 "required": [
-                    "entity_type_id",
+                    "unique_id",
                     "position"
                 ],
                 "properties": {
-                    "entity_type_id": {
+                    "unique_id": {
                         "type": "integer"
                     },
                     "position": {
