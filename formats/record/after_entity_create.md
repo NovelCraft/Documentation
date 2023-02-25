@@ -8,11 +8,9 @@
     "required": [
         "entity_type_id",
         "creation_list",
-        "unique_id",
-        "position"
     ],
     "properties": {
-        {
+        "creation_list":{
             "type": "array",
             "items": {
                 "type": "object",
