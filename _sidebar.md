@@ -24,7 +24,7 @@
 
   - [Update Player](protocols/update_player.md)
 
-  - [Update Ticks](protocols/update_ticks.md)
+  - [Update Tick](protocols/update_tick.md)
 
 - Formats
 

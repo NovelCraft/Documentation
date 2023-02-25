@@ -19,10 +19,10 @@
         "description": "A record item",
         "type": "object",
         "required": [
-          "ticks"
+          "tick"
         ],
         "properties": {
-          "ticks": {
+          "tick": {
             "type": "integer"
           },
           "blocks": {

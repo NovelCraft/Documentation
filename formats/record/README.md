@@ -20,7 +20,7 @@
         "required": [
           "type",
           "identifier",
-          "ticks",
+          "tick",
           "data"
         ],
         "properties": {
@@ -34,7 +34,7 @@
             "type": "string",
             "description": "The identifier of the event, or the file name of the event's documentation."
           },
-          "ticks": {
+          "tick": {
             "type": "integer",
             "minimum": 0
           },

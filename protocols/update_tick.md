@@ -1,4 +1,4 @@
-# Update Ticks
+# Update tick
 
 In every second, the server will send a packet to update the time.
 
@@ -12,17 +12,17 @@ In every second, the server will send a packet to update the time.
   "required": [
     "bound_to",
     "type",
-    "ticks"
+    "tick"
   ],
   "properties": {
     "bound_to": {
       "const": "clientbound"
     },
     "type": {
-      "const": "update_ticks"
+      "const": "update_tick"
     },
-    "ticks": {
-      "description": "The ticks since the game started",
+    "tick": {
+      "description": "The tick since the game started",
       "type": "integer"
     }
   }
