@@ -74,7 +74,8 @@
           "type": "object",
           "additionalProperties": false,
           "required": [
-            "value"
+            "value",
+            "max"
           ],
           "properties": {
             "value": {
