@@ -37,7 +37,7 @@ When the player moves to a new section, the server will send a packet to the cli
           "x",
           "y",
           "z",
-          "block_id"
+          "type_id"
         ],
         "properties": {
           "x": {
@@ -52,8 +52,8 @@ When the player moves to a new section, the server will send a packet to the cli
             "description": "The z coordinate of the block",
             "type": "integer"
           },
-          "block_id": {
-            "description": "The block ID",
+          "type_id": {
+            "description": "The block type ID",
             "type": "integer"
           }
         }

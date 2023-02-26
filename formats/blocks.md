@@ -19,13 +19,13 @@
       "additionalProperties": false,
       "required": [
         "identifier",
-        "block_id"
+        "type_id"
       ],
       "properties": {
         "identifier": {
           "type": "string"
         },
-        "block_id": {
+        "type_id": {
           "type": "integer",
           "minimum": 0
         },

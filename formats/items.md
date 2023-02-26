@@ -48,11 +48,11 @@
                 "type": "object",
                 "additionalProperties": false,
                 "required": [
-                  "block_id",
+                  "block_type_id",
                   "speed_modifier"
                 ],
                 "properties": {
-                  "block_id": {
+                  "block_type_id": {
                     "type": "integer"
                   },
                   "speed_modifier": {
