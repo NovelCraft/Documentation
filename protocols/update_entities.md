@@ -33,12 +33,12 @@ When the player moves to a new section, the server will send a packet to the cli
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "entity_id",
+          "type_id",
           "unique_id"
         ],
         "properties": {
-          "entity_id": {
-            "description": "The entity ID",
+          "type_id": {
+            "description": "The entity type ID",
             "type": "integer"
           },
           "unique_id": {

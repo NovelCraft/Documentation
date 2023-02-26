@@ -19,13 +19,13 @@
       "additionalProperties": false,
       "required": [
         "identifier",
-        "entity_id"
+        "type_id"
       ],
       "properties": {
         "identifier": {
           "type": "string"
         },
-        "entity_id": {
+        "type_id": {
           "type": "integer"
         },
       }

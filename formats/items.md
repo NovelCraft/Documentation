@@ -19,13 +19,13 @@
       "additionalProperties": false,
       "required": [
         "identifier",
-        "item_id"
+        "type_id"
       ],
       "properties": {
         "identifier": {
           "type": "string"
         },
-        "item_id": {
+        "type_id": {
           "type": "integer"
         },
       }
