@@ -46,10 +46,14 @@
 
     - [AfterEntityCreate Event Record](formats/record/after_entity_create.md)
 
+    - [AfterEntityDespawn Event Record](formats/record/after_entity_despawn.md)
+
     - [AfterEntityPositionChange Event Record](formats/record/after_entity_position_change.md)
 
     - [AfterEntityOrientationChange Event Record](formats/record/after_entity_orientation_change.md)
 
     - [AfterEntityRemove Event Record](formats/record/after_entity_remove.md)
+
+    - [AfterEntitySpawn Event Record](formats/record/after_entity_spawn.md)
 
   - [Level Data](formats/level_data.md)
