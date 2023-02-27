@@ -42,6 +42,8 @@
 
     - [Overview](formats/record/README.md)
 
+    - [AfterBlockChange Event Record](formats/record/after_block_change.md)
+
     - [AfterEntityCreate Event Record](formats/record/after_entity_create.md)
 
     - [AfterEntityPositionChange Event Record](formats/record/after_entity_position_change.md)
