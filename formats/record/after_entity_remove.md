@@ -1,4 +1,4 @@
-AfterEntityRemove Event Record
+# AfterEntityRemove Event Record
 
 `type` is `event` and `data` is an object with the following properties:
 
