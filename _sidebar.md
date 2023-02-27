@@ -48,6 +48,8 @@
 
     - [AfterEntityPositionChange Event Record](formats/record/after_entity_position_change.md)
 
+    - [AfterEntityOrientationChange Event Record](formats/record/after_entity_orientation_change.md)
+
     - [AfterEntityRemove Event Record](formats/record/after_entity_remove.md)
 
   - [Level Data](formats/level_data.md)
