@@ -7,13 +7,13 @@
     "type": "object",
     "required": [
         "attacker_unique_id",
-        "attack_type"
+        "attack_kind"
     ],
     "properties": {
         "attacker_unique_id": {
             "type": "integer"
         },
-        "attack_type": {
+        "attack_kind": {
             "enum": [
                 "click",
                 "hold_start",
