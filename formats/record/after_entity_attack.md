@@ -6,19 +6,30 @@
 {
     "type": "object",
     "required": [
-        "attacker_unique_id",
-        "attack_kind"
+        "attack_list"
     ],
     "properties": {
-        "attacker_unique_id": {
-            "type": "integer"
-        },
-        "attack_kind": {
-            "enum": [
-                "click",
-                "hold_start",
-                "hold_end"
-            ]
+        "attack_list": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "attacker_unique_id",
+                    "attack_kind"
+                ],
+                "properties": {
+                    "attacker_unique_id": {
+                        "type": "integer"
+                    },
+                    "attack_kind": {
+                        "enum": [
+                            "click",
+                            "hold_start",
+                            "hold_end"
+                        ]
+                    }
+                }
+            }
         }
     }
 }
