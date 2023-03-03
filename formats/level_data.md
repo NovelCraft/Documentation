@@ -64,13 +64,13 @@ The level data file is a zipped file containing the level data in JSON format wi
             "type": "object",
             "additionalProperties": false,
             "required": [
-                "type_id",
+                "entity_id",
                 "unique_id",
                 "position",
                 "orientation"
             ],
             "properties": {
-                "type_id": {
+                "entity_id": {
                     "description": "The entity type ID",
                     "type": "integer"
                 },
