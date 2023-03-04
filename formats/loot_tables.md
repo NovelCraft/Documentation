@@ -18,8 +18,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "type",
-        "id"
+        "type"
       ],
       "properties": {
         "type": {
@@ -27,11 +26,7 @@
             "block",
             "entity"
           ]
-        },
-        "id": {
-          "description": "Block ID or entity ID",
-          "type": "integer"
-        },
+        }
       }
     },
     "pools": {
