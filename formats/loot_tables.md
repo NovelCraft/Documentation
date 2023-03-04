@@ -18,7 +18,8 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "type"
+        "type",
+        "block_or_entity_type_id"
       ],
       "properties": {
         "type": {
@@ -26,6 +27,9 @@
             "block",
             "entity"
           ]
+        },
+        "block_or_entity_type_id": {
+          "type": "integer"
         }
       }
     },
