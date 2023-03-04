@@ -54,8 +54,8 @@
                 "type": "number",
                 "minimum": 0
               },
-              "item_id": {
-                "description": "The item id of the item to drop. If not specified, it will be treated as nothing.",
+              "item_type_id": {
+                "description": "The type id of the item to drop. If not specified, it will be treated as nothing.",
                 "type": "integer",
                 "minimum": 0
               },
