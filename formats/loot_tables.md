@@ -67,6 +67,12 @@
           }
         }
       }
+    },
+    "only_loot_by": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
     }
   }
 }
