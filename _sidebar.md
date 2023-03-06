@@ -42,22 +42,24 @@
 
     - [Overview](formats/record/README.md)
 
-    - [AfterEntityAttack Event Record](formats/record/after_entity_attack.md)
+    - [AfterBlockChangeEvent Record](formats/record/after_block_change.md)
 
-    - [AfterBlockChange Event Record](formats/record/after_block_change.md)
+    - [AfterEntityAttackEvent Record](formats/record/after_entity_attack.md)
 
-    - [AfterEntityCreate Event Record](formats/record/after_entity_create.md)
+    - [AfterEntityCreateEvent Record](formats/record/after_entity_create.md)
 
-    - [AfterEntityDespawn Event Record](formats/record/after_entity_despawn.md)
+    - [AfterEntityDespawnEvent Record](formats/record/after_entity_despawn.md)
 
-    - [AfterEntityHurt Event Record](formats/record/after_entity_hurt.md)
+    - [AfterEntityHurtEvent Record](formats/record/after_entity_hurt.md)
 
-    - [AfterEntityPositionChange Event Record](formats/record/after_entity_position_change.md)
+    - [AfterEntityOrientationChangeEvent Record](formats/record/after_entity_orientation_change.md)
 
-    - [AfterEntityOrientationChange Event Record](formats/record/after_entity_orientation_change.md)
+    - [AfterEntityPositionChangeEvent Record](formats/record/after_entity_position_change.md)
 
-    - [AfterEntityRemove Event Record](formats/record/after_entity_remove.md)
+    - [AfterEntityRemoveEvent Record](formats/record/after_entity_remove.md)
 
-    - [AfterEntitySpawn Event Record](formats/record/after_entity_spawn.md)
+    - [AfterEntitySpawnEvent Record](formats/record/after_entity_spawn.md)
+
+    - [AfterPlayerInventoryChangeEvent Record](formats/record/after_player_inventory_change.md)
 
   - [Level Data](formats/level_data.md)
