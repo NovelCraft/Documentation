@@ -10,22 +10,6 @@
 
   - [Get Blocks and Entities](protocols/get_blocks_and_entities.md)
 
-  - [Get Player Information](protocols/get_player_information.md)
-
-  - [Get State](protocols/get_state.md)
-
-  - [Handshake](protocols/handshake.md)
-
-  - [Perform Action](protocols/perform_action.md)
-
-  - [Update Blocks](protocols/update_blocks.md)
-
-  - [Update Entities](protocols/update_entities.md)
-
-  - [Update Player](protocols/update_player.md)
-
-  - [Update Tick](protocols/update_tick.md)
-
 - Formats
 
   - [Blocks](formats/blocks.md)
