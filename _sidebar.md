@@ -4,6 +4,12 @@
 
   - [Export a Level from Minecraft](tutorials/export_a_level_from_minecraft.md)
 
+- SDK
+
+  - [Overview](sdk/README.md)
+  
+  - [APIs](sdk/apis.md)
+
 - Protocols
 
   - [Overview](protocols/README.md)
