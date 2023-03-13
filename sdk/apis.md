@@ -4,7 +4,7 @@ All provided SDKs follows the same API structure, though they may differ in the 
 
 - Sdk
 
-  - Sdk.Initialize(Config)
+  - Sdk.Initialize(Args)
 
   - Sdk.GetAgent() -> Agent
 
